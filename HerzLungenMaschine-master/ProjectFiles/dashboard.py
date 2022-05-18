@@ -117,14 +117,17 @@ def update_figure(value, algorithm_checkmarks):
     fig2 = px.line(ts, x="Time (s)", y = data_names[2])
     
     ### Aufgabe 2: Min / Max ###
-    ## erstellen einer group
+    # erstellen einer group
     grp = ts.agg(['max','min','idxmax','idxmin'])
+    # 'agg' holt sich die benötigten Daten aus 'list_of_subjects'
     print(grp)
 
+    # wenn nichts angecklickt wird, wird nichts gemacht
     if algorithm_checkmarks is not None:
 
-        ## wenn ein max angeklickt wir, werden für die drei Graphen das Maximum angezeigt
+        # wenn 'max' angeklickt wird, werden für die drei Graphen das jeweilige Maximum angezeigt
         if 'max' in algorithm_checkmarks:
+            # 'add_trace' setzt für 'fig0' bis 'fig3' am Maximum eine Makierung
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
                 mode='markers',name='max',marker_color='cyan'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
@@ -132,8 +135,10 @@ def update_figure(value, algorithm_checkmarks):
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
                 mode='markers',name='max',marker_color='cyan'))
         
-        ## wenn ein min angeklickt wir, werden für die drei Graphen das Minnima angezeigt
+        # wenn ein min angeklickt wir, werden für die drei Graphen das Minima angezeigt
         if 'min' in algorithm_checkmarks:
+            # 'add_trace' setzt für 'fig0' bis 'fig3' am Minimum eine Makierung
+            # 'loc' lokalisiert die gesuchten Daten in 'grp'
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
                 mode='markers',name='min',marker_color='orangered'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
@@ -173,10 +178,11 @@ def bloodflow_figure(value, bloodflow_checkmarks):
         ## Aufgabe 3
         if bloodflow_checkmarks == ['Show Limits']:
             # Durchschnitt
+            # 'loc' lokalisiert die gesuchten Daten
             avg=bf.mean()
             x=[0,480]
             y=avg.loc['Blood Flow (ml/s)']
-
+            # 'add_trace' erstellt eine Linie für den Durchschnitt
             fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt',marker_color='lime'))
 
             #15%
