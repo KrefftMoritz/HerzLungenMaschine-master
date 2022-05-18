@@ -165,18 +165,18 @@ def bloodflow_figure(value, bloodflow_checkmarks):
 
     if bloodflow_checkmarks is not None:
 
-        if bloodflow_checkmarks == ['SMA']:
+        if 'SMA' in bloodflow_checkmarks:
             bf = list_of_subjects[int(value)-1].subject_data
             bf['Simple Moving Average']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
             fig3 = px.line(bf, x="Time (s)", y="Simple Moving Average")
 
-        if bloodflow_checkmarks == ['CMA']:
+        if 'CMA' in bloodflow_checkmarks:
             bf = list_of_subjects[int(value)-1].subject_data
             bf['Cumulative Moving Average']=ut.calculate_CMA(bf['Blood Flow (ml/s)'],2)
             fig3 = px.line(bf, x="Time (s)", y="Cumulative Moving Average")
 
         ## Aufgabe 3
-        if bloodflow_checkmarks == ['Show Limits']:
+        if 'Show Limits' in bloodflow_checkmarks:
             # Durchschnitt
             # 'loc' lokalisiert die gesuchten Daten
             avg=bf.mean()
