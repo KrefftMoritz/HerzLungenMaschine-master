@@ -1,5 +1,6 @@
 from cmath import nan
 from tempfile import SpooledTemporaryFile
+from turtle import color
 import dash
 from dash import Dash, html, dcc, Output, Input, dash_table
 import plotly.express as px
@@ -120,23 +121,25 @@ def update_figure(value, algorithm_checkmarks):
     grp = ts.agg(['max','min','idxmax','idxmin'])
     print(grp)
 
-    ## wenn ein max angeklickt wir, werden für die drei Graphen das Maximum angezeigt
-    if 'max' in algorithm_checkmarks:
-        fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
-            mode='markers',name='max',marker_color='turquoise'))
-        fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
-            mode='markers',name='max',marker_color='turquoise'))
-        fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
-            mode='markers',name='max',marker_color='turquoise'))
+    if algorithm_checkmarks is not None:
 
-    ## wenn ein min angeklickt wir, werden für die drei Graphen das Minnima angezeigt
-    if 'min' in algorithm_checkmarks:
-        fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
-            mode='markers',name='min',marker_color='orange '))
-        fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
-            mode='markers',name='min',marker_color='orange '))
-        fig2.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[2]]],y=[grp.loc['min',data_names[2]]],
-            mode='markers',name='min',marker_color='orange '))
+        ## wenn ein max angeklickt wir, werden für die drei Graphen das Maximum angezeigt
+        if 'max' in algorithm_checkmarks:
+            fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
+                mode='markers',name='max',marker_color='turquoise'))
+            fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
+                mode='markers',name='max',marker_color='turquoise'))
+            fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
+                mode='markers',name='max',marker_color='turquoise'))
+        
+        ## wenn ein min angeklickt wir, werden für die drei Graphen das Minnima angezeigt
+        if 'min' in algorithm_checkmarks:
+            fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
+                mode='markers',name='min',marker_color='orange '))
+            fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
+                mode='markers',name='min',marker_color='orange '))
+            fig2.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[2]]],y=[grp.loc['min',data_names[2]]],
+                mode='markers',name='min',marker_color='orange '))
 
     return fig0, fig1, fig2  
 
@@ -155,25 +158,33 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     bf = list_of_subjects[int(value)-1].subject_data
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
 
+    if bloodflow_checkmarks is not None:
 
-    if bloodflow_checkmarks == ['SMA']:
-        bf = list_of_subjects[int(value)-1].subject_data
-        bf['Blood Flow (ml/s) - SMA']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
-        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
+        if bloodflow_checkmarks == ['SMA']:
+            bf = list_of_subjects[int(value)-1].subject_data
+            bf['Simple Moving Average']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
+            fig3 = px.line(bf, x="Time (s)", y="Simple Moving Average")
 
-    if bloodflow_checkmarks == ['CMA']:
-        bf = list_of_subjects[int(value)-1].subject_data
-        bf['Blood Flow (ml/s) - CMA']=ut.calculate_CMA(bf['Blood Flow (ml/s)'],2)
-        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
+        if bloodflow_checkmarks == ['CMA']:
+            bf = list_of_subjects[int(value)-1].subject_data
+            bf['Cumulative Moving Average']=ut.calculate_CMA(bf['Blood Flow (ml/s)'],2)
+            fig3 = px.line(bf, x="Time (s)", y="Cumulative Moving Average")
 
-    ## Aufgabe 3
-    # Durchschnitt
-    avg=bf.mean()
+        ## Aufgabe 3
+        if bloodflow_checkmarks == ['Show Limits']:
+            # Durchschnitt
+            avg=bf.mean()
+            x=[0,480]
+            y=avg.loc['Blood Flow (ml/s)']
 
-    x=[0,480]
-    y=avg.loc['Blood Flow (ml/s)']
+            fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt'))
 
-    fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines'))
+            #15%
+            y_up=avg.loc['Blood Flow (ml/s)']*1.15
+            y_down=avg.loc['Blood Flow (ml/s)']*0.85
+
+            fig3.add_trace(go.Scatter(x=x,y=[y_up,y_up],mode='lines',name='+15%'))
+            fig3.add_trace(go.Scatter(x=x,y=[y_down,y_down],mode='lines',name='-15%'))
 
     return fig3
 
