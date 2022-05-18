@@ -116,24 +116,27 @@ def update_figure(value, algorithm_checkmarks):
     fig2 = px.line(ts, x="Time (s)", y = data_names[2])
     
     ### Aufgabe 2: Min / Max ###
+    ## erstellen einer group
     grp = ts.agg(['max','min','idxmax','idxmin'])
     print(grp)
 
+    ## wenn ein max angeklickt wir, werden für die drei Graphen das Maximum angezeigt
     if 'max' in algorithm_checkmarks:
         fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
-            mode='markers',name='max',marker_color='green'))
+            mode='markers',name='max',marker_color='turquoise'))
         fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
-            mode='markers',name='max',marker_color='green'))
+            mode='markers',name='max',marker_color='turquoise'))
         fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
-            mode='markers',name='max',marker_color='green'))
+            mode='markers',name='max',marker_color='turquoise'))
 
+    ## wenn ein min angeklickt wir, werden für die drei Graphen das Minnima angezeigt
     if 'min' in algorithm_checkmarks:
         fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
-            mode='markers',name='min',marker_color='red'))
+            mode='markers',name='min',marker_color='orange '))
         fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
-            mode='markers',name='min',marker_color='red'))
+            mode='markers',name='min',marker_color='orange '))
         fig2.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[2]]],y=[grp.loc['min',data_names[2]]],
-            mode='markers',name='min',marker_color='red'))
+            mode='markers',name='min',marker_color='orange '))
 
     return fig0, fig1, fig2  
 
@@ -152,6 +155,16 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     bf = list_of_subjects[int(value)-1].subject_data
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
 
+
+    if bloodflow_checkmarks == ['SMA']:
+        bf = list_of_subjects[int(value)-1].subject_data
+        bf['Blood Flow (ml/s) - SMA']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
+        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
+
+    if bloodflow_checkmarks == ['CMA']:
+        bf = list_of_subjects[int(value)-1].subject_data
+        bf['Blood Flow (ml/s) - CMA']=ut.calculate_CMA(bf['Blood Flow (ml/s)'],2)
+        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
 
     return fig3
 
