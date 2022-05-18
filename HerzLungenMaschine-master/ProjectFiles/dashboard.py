@@ -126,20 +126,20 @@ def update_figure(value, algorithm_checkmarks):
         ## wenn ein max angeklickt wir, werden für die drei Graphen das Maximum angezeigt
         if 'max' in algorithm_checkmarks:
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
-                mode='markers',name='max',marker_color='turquoise'))
+                mode='markers',name='max',marker_color='cyan'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
-                mode='markers',name='max',marker_color='turquoise'))
+                mode='markers',name='max',marker_color='cyan'))
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
-                mode='markers',name='max',marker_color='turquoise'))
+                mode='markers',name='max',marker_color='cyan'))
         
         ## wenn ein min angeklickt wir, werden für die drei Graphen das Minnima angezeigt
         if 'min' in algorithm_checkmarks:
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
-                mode='markers',name='min',marker_color='orange '))
+                mode='markers',name='min',marker_color='orangered'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
-                mode='markers',name='min',marker_color='orange '))
+                mode='markers',name='min',marker_color='orangered'))
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[2]]],y=[grp.loc['min',data_names[2]]],
-                mode='markers',name='min',marker_color='orange '))
+                mode='markers',name='min',marker_color='orangered'))
 
     return fig0, fig1, fig2  
 
@@ -177,14 +177,14 @@ def bloodflow_figure(value, bloodflow_checkmarks):
             x=[0,480]
             y=avg.loc['Blood Flow (ml/s)']
 
-            fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt'))
+            fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt',marker_color='lime'))
 
             #15%
             y_up=avg.loc['Blood Flow (ml/s)']*1.15
             y_down=avg.loc['Blood Flow (ml/s)']*0.85
 
-            fig3.add_trace(go.Scatter(x=x,y=[y_up,y_up],mode='lines',name='+15%'))
-            fig3.add_trace(go.Scatter(x=x,y=[y_down,y_down],mode='lines',name='-15%'))
+            fig3.add_trace(go.Scatter(x=x,y=[y_up,y_up],mode='lines',name='+15%',marker_color='orangered'))
+            fig3.add_trace(go.Scatter(x=x,y=[y_down,y_down],mode='lines',name='-15%',marker_color='orangered'))
 
     return fig3
 
