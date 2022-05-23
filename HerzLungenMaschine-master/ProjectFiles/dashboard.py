@@ -52,23 +52,27 @@ fig2 = px.line(df, x="Time (s)", y = "Temp (C)")
 fig3 = px.line(df, x="Time (s)", y = "Blood Flow (ml/s)")
 
 app.layout = html.Div(children=[
-    html.H1(children='Cardiopulmonary Bypass Dashboard'),
+    html.H1(children='Cardiopulmonary Bypass Dashboard', 
+        style={'color': 'dimgrey', 'font-family': 'verdana', 'fontSize': 46, 'text-align': 'center'}),
 
-    html.Div(children='''
-        Hier könnten Informationen zum Patienten stehen....
-    '''),
+    html.Div(children='Auswahl zum anzeigen von Minimum und Maximum bei SpO2, Blood FLow und Temp',
+        style={'font-family': 'arial', 'fontSize': 17}),
 
     dcc.Checklist(
-    id= 'checklist-algo',
-    options=algorithm_names,
-    inline=False
-    ),
+        id= 'checklist-algo',
+        options=algorithm_names,
+        inline=False,
+        style={'font-family': 'arial'},
+        ),
+
+    html.Div(children='Auswahl des Patienten',
+        style={'font-family': 'arial', 'fontSize': 17, 'margin-top': 25}),
 
     html.Div([
         dcc.Dropdown(options = subj_numbers, placeholder='Select a subject', value='1', id='subject-dropdown'),
     html.Div(id='dd-output-container')
     ],
-        style={"width": "15%"}
+        style={"width": "15%", 'font-family': 'arial'}
     ),
 
     dcc.Graph(
@@ -85,10 +89,14 @@ app.layout = html.Div(children=[
         figure=fig2
     ),
 
+    html.Div(children='Auswahl zum anzeigen von SMA und CMA im Blood Flow',
+        style={'font-family': 'arial', 'fontSize': 17}),
+    
     dcc.Checklist(
         id= 'checklist-bloodflow',
         options=blood_flow_functions,
-        inline=False
+        inline=False,
+        style={'font-family': 'arial'},
     ),
     dcc.Graph(
         id='dash-graph3',
@@ -160,18 +168,16 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     
     ## Calculate Moving Average: Aufgabe 2
     print(bloodflow_checkmarks)
-    bf = list_of_subjects[int(value)-1].subject_data
+    bf = list_of_subjects[int(value)-1].subject_data # bf deklaration
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
 
     if bloodflow_checkmarks is not None:
 
-        if 'SMA' in bloodflow_checkmarks:
-            bf = list_of_subjects[int(value)-1].subject_data
+        if 'SMA' in bloodflow_checkmarks: 
             bf['Simple Moving Average']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
             fig3 = px.line(bf, x="Time (s)", y="Simple Moving Average")
 
         if 'CMA' in bloodflow_checkmarks:
-            bf = list_of_subjects[int(value)-1].subject_data
             bf['Cumulative Moving Average']=ut.calculate_CMA(bf['Blood Flow (ml/s)'],2)
             fig3 = px.line(bf, x="Time (s)", y="Cumulative Moving Average")
 
@@ -185,7 +191,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
             # 'add_trace' erstellt eine Linie für den Durchschnitt
             fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt',marker_color='lime'))
 
-            #15%
+            # +/- 15%
             y_up=avg.loc['Blood Flow (ml/s)']*1.15
             y_down=avg.loc['Blood Flow (ml/s)']*0.85
 
