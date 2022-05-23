@@ -33,9 +33,9 @@ class Subject():
 
 def calculate_CMA(df,n):
     ## von Julian
-    return df.expanding(n).mean()
+    return df.expanding(n).mean() # berechnung von CMA
     
 
 def calculate_SMA(df,n):
     ## von Julian
-    return df.rolling(n).mean()
+    return df.rolling(n).mean() # berechnung von SMA
