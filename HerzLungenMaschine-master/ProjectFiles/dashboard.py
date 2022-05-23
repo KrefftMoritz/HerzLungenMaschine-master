@@ -137,23 +137,28 @@ def update_figure(value, algorithm_checkmarks):
         if 'max' in algorithm_checkmarks:
             # 'add_trace' setzt für 'fig0' bis 'fig3' am Maximum eine Makierung
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
-                mode='markers',name='max',marker_color='cyan'))
+                mode='markers',marker_symbol='triangle-down',marker_size=13,name='max',marker_color='black'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
-                mode='markers',name='max',marker_color='cyan'))
+                mode='markers',marker_symbol='triangle-down',marker_size=13,name='max',marker_color='black'))
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
-                mode='markers',name='max',marker_color='cyan'))
+                mode='markers',marker_symbol='triangle-down',marker_size=13,name='max',marker_color='black'))
         
         # wenn ein min angeklickt wir, werden für die drei Graphen das Minima angezeigt
         if 'min' in algorithm_checkmarks:
             # 'add_trace' setzt für 'fig0' bis 'fig3' am Minimum eine Makierung
             # 'loc' lokalisiert die gesuchten Daten in 'grp'
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
-                mode='markers',name='min',marker_color='orangered'))
+                mode='markers',marker_symbol='triangle-up',marker_size=13,name='min',marker_color='black'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
-                mode='markers',name='min',marker_color='orangered'))
+                mode='markers',marker_symbol='triangle-up',marker_size=13,name='min',marker_color='black'))
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[2]]],y=[grp.loc['min',data_names[2]]],
-                mode='markers',name='min',marker_color='orangered'))
+                mode='markers',marker_symbol='triangle-up',marker_size=13,name='min',marker_color='black'))
 
+
+
+    fig0.update_traces(line_color='steelblue') # ändern der Farbe vom Plot 0
+    fig1.update_traces(line_color='firebrick') # ändern der Farbe vom Plot 1
+    fig2.update_traces(line_color='dimgrey') # ändern der Farbe vom Plot 2
     return fig0, fig1, fig2  
 
 
@@ -198,6 +203,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
             fig3.add_trace(go.Scatter(x=x,y=[y_up,y_up],mode='lines',name='+15%',marker_color='orangered'))
             fig3.add_trace(go.Scatter(x=x,y=[y_down,y_down],mode='lines',name='-15%',marker_color='orangered'))
 
+    fig3.update_traces(line_color='firebrick') # ändern der Farbe vom Plot 3
     return fig3
 
 if __name__ == '__main__':
