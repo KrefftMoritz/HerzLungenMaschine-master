@@ -183,7 +183,8 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     fig3.update_traces(line_color='dimgrey') # ändern der Farbe vom Plot 3
 
     if bloodflow_checkmarks is not None:
-
+        
+        ## zu Aufgabe 2    
         if 'SMA' in bloodflow_checkmarks: 
             bf['Simple Moving Average']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
             fig3 = px.line(bf, x="Time (s)", y="Simple Moving Average")
