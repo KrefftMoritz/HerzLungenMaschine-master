@@ -175,16 +175,19 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     print(bloodflow_checkmarks)
     bf = list_of_subjects[int(value)-1].subject_data # bf deklaration
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
+    fig3.update_traces(line_color='dimgrey') # ändern der Farbe vom Plot 3
 
     if bloodflow_checkmarks is not None:
 
         if 'SMA' in bloodflow_checkmarks: 
             bf['Simple Moving Average']=ut.calculate_SMA(bf['Blood Flow (ml/s)'],5)
             fig3 = px.line(bf, x="Time (s)", y="Simple Moving Average")
+            fig3.update_traces(line_color='dimgrey') # ändern der Farbe vom Plot 3
 
         if 'CMA' in bloodflow_checkmarks:
             bf['Cumulative Moving Average']=ut.calculate_CMA(bf['Blood Flow (ml/s)'],2)
             fig3 = px.line(bf, x="Time (s)", y="Cumulative Moving Average")
+            fig3.update_traces(line_color='dimgrey') # ändern der Farbe vom Plot 3
 
         ## Aufgabe 3
         if 'Show Limits' in bloodflow_checkmarks:
@@ -194,16 +197,15 @@ def bloodflow_figure(value, bloodflow_checkmarks):
             x=[0,480]
             y=avg.loc['Blood Flow (ml/s)']
             # 'add_trace' erstellt eine Linie für den Durchschnitt
-            fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt',marker_color='lime'))
+            fig3.add_trace(go.Scatter(x=x,y=[y,y],mode='lines',name='Durchschnitt',marker_color='deepskyblue'))
 
             # +/- 15%
             y_up=avg.loc['Blood Flow (ml/s)']*1.15
             y_down=avg.loc['Blood Flow (ml/s)']*0.85
 
-            fig3.add_trace(go.Scatter(x=x,y=[y_up,y_up],mode='lines',name='+15%',marker_color='orangered'))
-            fig3.add_trace(go.Scatter(x=x,y=[y_down,y_down],mode='lines',name='-15%',marker_color='orangered'))
+            fig3.add_trace(go.Scatter(x=x,y=[y_up,y_up],mode='lines',name='+15%',marker_color='lime'))
+            fig3.add_trace(go.Scatter(x=x,y=[y_down,y_down],mode='lines',name='-15%',marker_color='crimson'))
 
-    fig3.update_traces(line_color='firebrick') # ändern der Farbe vom Plot 3
     return fig3
 
 if __name__ == '__main__':
