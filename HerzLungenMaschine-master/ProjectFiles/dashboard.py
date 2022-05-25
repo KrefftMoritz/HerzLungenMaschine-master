@@ -53,8 +53,10 @@ fig3 = px.line(df, x="Time (s)", y = "Blood Flow (ml/s)")
 
 app.layout = html.Div(children=[
     html.H1(children='Cardiopulmonary Bypass Dashboard', 
+        # ändern von Farbe, Schriftart, Schriftgröße und Orientierung
         style={'color': 'dimgrey', 'font-family': 'verdana', 'fontSize': 46, 'text-align': 'center'}),
 
+    # ändern des Textes
     html.Div(children='Auswahl zum anzeigen von Minimum und Maximum bei SpO2, Blood FLow und Temp',
         style={'font-family': 'arial', 'fontSize': 17}),
 
@@ -62,10 +64,12 @@ app.layout = html.Div(children=[
         id= 'checklist-algo',
         options=algorithm_names,
         inline=False,
+        # änder der Schriftart
         style={'font-family': 'arial'},
         ),
 
     html.Div(children='Auswahl des Patienten',
+        # ändern der Schriftart, Schriftgröße und einfügen eines Abstands
         style={'font-family': 'arial', 'fontSize': 17, 'margin-top': 25}),
 
     html.Div([
@@ -90,6 +94,7 @@ app.layout = html.Div(children=[
     ),
 
     html.Div(children='Auswahl zum anzeigen von SMA und CMA im Blood Flow',
+        # ändern der Schriftart und der Schriftgröße
         style={'font-family': 'arial', 'fontSize': 17}),
     
     dcc.Checklist(
@@ -137,22 +142,22 @@ def update_figure(value, algorithm_checkmarks):
         if 'max' in algorithm_checkmarks:
             # 'add_trace' setzt für 'fig0' bis 'fig3' am Maximum eine Makierung
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[0]]],y=[grp.loc['max',data_names[0]]],
-                mode='markers',marker_symbol='triangle-down',marker_size=13,name='max',marker_color='black'))
+                mode='markers',marker_symbol='triangle-down',marker_size=13,name='Maximum',marker_color='black'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[1]]],y=[grp.loc['max',data_names[1]]],
-                mode='markers',marker_symbol='triangle-down',marker_size=13,name='max',marker_color='black'))
+                mode='markers',marker_symbol='triangle-down',marker_size=13,name='Maximum',marker_color='black'))
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmax',data_names[2]]],y=[grp.loc['max',data_names[2]]],
-                mode='markers',marker_symbol='triangle-down',marker_size=13,name='max',marker_color='black'))
+                mode='markers',marker_symbol='triangle-down',marker_size=13,name='Maximum',marker_color='black'))
         
         # wenn ein min angeklickt wir, werden für die drei Graphen das Minima angezeigt
         if 'min' in algorithm_checkmarks:
             # 'add_trace' setzt für 'fig0' bis 'fig3' am Minimum eine Makierung
             # 'loc' lokalisiert die gesuchten Daten in 'grp'
             fig0.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[0]]],y=[grp.loc['min',data_names[0]]],
-                mode='markers',marker_symbol='triangle-up',marker_size=13,name='min',marker_color='black'))
+                mode='markers',marker_symbol='triangle-up',marker_size=13,name='Minimum',marker_color='black'))
             fig1.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[1]]],y=[grp.loc['min',data_names[1]]],
-                mode='markers',marker_symbol='triangle-up',marker_size=13,name='min',marker_color='black'))
+                mode='markers',marker_symbol='triangle-up',marker_size=13,name='Minimum',marker_color='black'))
             fig2.add_trace(go.Scatter(x=[grp.loc['idxmin',data_names[2]]],y=[grp.loc['min',data_names[2]]],
-                mode='markers',marker_symbol='triangle-up',marker_size=13,name='min',marker_color='black'))
+                mode='markers',marker_symbol='triangle-up',marker_size=13,name='Minimum',marker_color='black'))
 
 
 
