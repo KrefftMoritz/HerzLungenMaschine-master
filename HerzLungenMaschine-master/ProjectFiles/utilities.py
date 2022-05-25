@@ -15,7 +15,7 @@ class Subject():
 
         __f = open(file_name)
         self.subject_data = pd.read_csv(__f)
-        self.subject_data = self.subject_data.interpolate(method='quadratic', axis=0)
+        self.subject_data = self.subject_data.interpolate(method='quadratic', axis=0) # von linear zu quadratisch
         __splited_id = re.findall(r'\d+',file_name)      
         self.subject_id = ''.join(__splited_id)
         self.names = self.subject_data.columns.values.tolist()
